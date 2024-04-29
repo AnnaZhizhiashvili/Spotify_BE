@@ -65,6 +65,29 @@ app.get('/artists', async (req, res) => {
     }
 })
 
+app.get('/search', async (req, res) => {
+    try {
+        let url = `https://api.spotify.com/v1/search?q=${req.query.q}&limit=9`
+        console.log(typeof req.query.type,req.query.type )
+        if (req.query.type !== undefined) {
+            console.log('if')
+            url += `&type=${req.query.type}`
+        } else {
+            url += `&type=track,playlist,artist,show,episode,audiobook,album`
+            console.log('else', url)
+
+        }
+        const response = await axios.get(url, {
+            headers: {
+                'Authorization': `Bearer ${access_token}`
+            }
+        })
+        res.json(response.data)
+    } catch (error) {
+        console.log(error)
+    }
+})
+
 
 app.listen(3200, () => {
     console.log('runnig')
