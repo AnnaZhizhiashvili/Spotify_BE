@@ -34,3 +34,16 @@ exports.search = async (req, res, next) => {
     }
 }
 
+exports.getGenres = async (req, res, next) => {
+    try {
+        const response = await axios.get('https://api.spotify.com/v1/recommendations/available-genre-seeds', {
+            headers: {
+                'Authorization': `Bearer ${process.env.ACCESS_TOKEN}`
+            }
+        })
+        res.json(response.data)
+    } catch (error) {
+        next(new AppError('Could not get categories', 400))
+    }
+}
+
