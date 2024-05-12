@@ -47,3 +47,17 @@ exports.getGenres = async (req, res, next) => {
     }
 }
 
+exports.getArtistsTracks = async (req, res, next) => {
+    const  url = `https://api.spotify.com/v1/artists/${req.params.id}/top-tracks?market=GE&limit=1`
+    try {
+            const response = await axios.get(url, {
+                headers: {
+                    'Authorization': `Bearer ${process.env.ACCESS_TOKEN}`
+                }
+            })
+            res.json(response.data)
+        } catch (error) {
+            next(new AppError('Could not get categories', 400))
+        }
+}
+
