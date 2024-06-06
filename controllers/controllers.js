@@ -34,6 +34,21 @@ exports.search = async (req, res, next) => {
     }
 }
 
+exports.searchTrack = async (req, res, next) => {
+    try {
+        let url = `https://api.spotify.com/v1/search?q=${req.params.id}&limit=1&type=track&market=GE`
+        const response = await axios.get(url, {
+            headers: {
+                'Authorization': `Bearer ${process.env.ACCESS_TOKEN}`
+            }
+        })
+        console.log(response.data.tracks.items[0])
+        res.json(response.data)
+    } catch (error) {
+        next(new AppError('Could not get searched items', 400))
+    }
+}
+
 exports.getGenres = async (req, res, next) => {
     try {
         const response = await axios.get('https://api.spotify.com/v1/recommendations/available-genre-seeds', {
@@ -49,6 +64,20 @@ exports.getGenres = async (req, res, next) => {
 
 exports.getArtistsTracks = async (req, res, next) => {
     const  url = `https://api.spotify.com/v1/artists/${req.params.id}/top-tracks?market=GE&limit=1`
+    try {
+            const response = await axios.get(url, {
+                headers: {
+                    'Authorization': `Bearer ${process.env.ACCESS_TOKEN}`
+                }
+            })
+            res.json(response.data)
+        } catch (error) {
+            next(new AppError('Could not get categories', 400))
+        }
+}
+
+exports.getTrack = async (req, res, next) => {
+    const  url = `https://api.spotify.com/v1/tracks/${req.params.id}`
     try {
             const response = await axios.get(url, {
                 headers: {
