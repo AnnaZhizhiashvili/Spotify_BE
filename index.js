@@ -4,8 +4,8 @@ const globalErrorHandler = require('./controllers/errorController');
 require('dotenv').config()
 const cors = require('cors');
 app.use(cors());
-const spotifyRouter = require('./routes/routes')
-const getAccessToken  = require('./utils/spotifyAuth')
+const router = require('./routes/routes')
+// const getAccessToken  = require('./utils/spotifyAuth')
 
 app.use(express.json());
 
@@ -17,19 +17,19 @@ app.use(authenticateToken);
 
 
 
-getAccessToken().then().catch(err => console.log(err))
+// getAccessToken().then().catch(err => console.log(err))
 
-setInterval(async () => {
-    try {
-        getAccessToken().then()
-    } catch (error) {
-        console.error('Error while requesting access token:', error);
-    }
+// setInterval(async () => {
+//     try {
+//         getAccessToken().then()
+//     } catch (error) {
+//         console.error('Error while requesting access token:', error);
+//     }
+//
+// }, 3600000 )
 
-}, 3600000 )
 
-
-app.use('/api/v1', spotifyRouter);
+app.use('/api/v1', router);
 
 
 app.all('*', (req, res, next) => {
